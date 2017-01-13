@@ -1,13 +1,45 @@
 package com.istat.freedev.processor;
 
+import istat.android.data.access.sqlite.SQLiteDelete;
+import istat.android.data.access.sqlite.SQLiteInsert;
+import istat.android.data.access.sqlite.SQLiteMerge;
+import istat.android.data.access.sqlite.SQLiteSelect;
+import istat.android.data.access.sqlite.SQLiteUpdate;
+
 /**
  * Created by istat on 03/01/17.
  */
 
-public class SQLProcess <Result, Error extends Process.ProcessError> extends Process<Result, Error> {
-    @Override
-    protected void onExecute(Object... vars) {
+public class SQLProcess<Result, Error extends Process.ProcessError> extends Process<Result, Error> {
+    Thread thread;
 
+    public SQLProcess() {
+
+    }
+
+    @Override
+    protected void onExecute(final Object... vars) {
+        thread = new Thread() {
+            @Override
+            public void run() {
+                for (Object sql : vars) {
+                    if (sql instanceof SQLiteSelect) {
+                    } else if (sql instanceof SQLiteSelect) {
+
+                    } else if (sql instanceof SQLiteUpdate) {
+
+                    } else if (sql instanceof SQLiteDelete) {
+
+                    } else if (sql instanceof SQLiteInsert) {
+
+                    } else if (sql instanceof SQLiteMerge) {
+
+                    }
+                }
+
+            }
+        };
+        thread.start();
     }
 
     @Override
@@ -32,16 +64,23 @@ public class SQLProcess <Result, Error extends Process.ProcessError> extends Pro
 
     @Override
     public boolean isRunning() {
-        return false;
+        return thread != null && thread.isAlive();
     }
 
     @Override
     public boolean isCompleted() {
-        return false;
+        return thread != null && !thread.isAlive();
     }
 
     @Override
     public boolean isPaused() {
         return false;
+    }
+
+    public class SQLiteSelectProcess<T> extends SQLProcess<T, Error> {
+        final void execute(ProcessManager manager, SQLiteSelect... vars) {
+            super.execute(manager, (Object[]) vars);
+        }
+
     }
 }
