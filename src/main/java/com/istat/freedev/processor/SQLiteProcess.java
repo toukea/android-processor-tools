@@ -10,10 +10,10 @@ import istat.android.data.access.sqlite.SQLiteUpdate;
  * Created by istat on 03/01/17.
  */
 
-public class SQLProcess<Result, Error extends Process.ProcessError> extends Process<Result, Error> {
+public class SQLiteProcess<Result, Error extends Process.ProcessError> extends Process<Result, Error> {
     Thread thread;
 
-    public SQLProcess() {
+    public SQLiteProcess() {
 
     }
 
@@ -77,7 +77,7 @@ public class SQLProcess<Result, Error extends Process.ProcessError> extends Proc
         return false;
     }
 
-    public class SQLiteSelectProcess<T> extends SQLProcess<T, Error> {
+    public class SQLiteSelectProcess<T> extends SQLiteProcess<T, Error> {
         final void execute(ProcessManager manager, SQLiteSelect... vars) {
             super.execute(manager, (Object[]) vars);
         }
