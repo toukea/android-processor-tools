@@ -41,10 +41,9 @@ public class ExampleUnitTest {
         @Override
         public void onHttpSuccess(HttpAsyncQuery.HttpQueryResponse result) {
             try {
-                SQLite.SQL sql=SQLite.fromConnection("dbnAME");
+                SQLite.SQL sql = SQLite.fromConnection("dbnAME");
                 sql.select(this.getClass());
                 sql.close();
-                SQLite.fromPath(null,"");
             } catch (Exception e) {
                 e.printStackTrace();
             }

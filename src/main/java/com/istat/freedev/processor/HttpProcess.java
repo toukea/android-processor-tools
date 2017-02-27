@@ -216,9 +216,9 @@ public class HttpProcess<Result, Error extends Process.ProcessError> extends Pro
     }
 
     @Override
-    public Object onBuildResponseBody(HttpURLConnection connexion, InputStream stream, HttpAsyncQuery query) throws Exception {
+    public Object onBuildResponseBody(HttpURLConnection connexion, InputStream stream) throws Exception {
         try {
-            String incomingData = StreamOperationTools.streamToString(query.executionController, stream);
+            String incomingData = StreamOperationTools.streamToString(this.asyncQ.executionController, stream);
             return new JSONObject(incomingData);
         } catch (Exception e) {
             e.printStackTrace();
