@@ -4,7 +4,7 @@ package com.istat.freedev.processor;
  * Created by istat on 03/01/17.
  */
 
-public class FileProcess <Result, Error extends Process.ProcessError> extends Process<Result, Error>{
+public class FileProcess <Result, Error extends Throwable> extends Process<Result, Error>{
     @Override
     protected void onExecute(Object... vars) {
 

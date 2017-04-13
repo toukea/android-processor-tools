@@ -47,6 +47,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
     compile project(':android-processor')
-    compile project(':android-IstatNetwork')
-    compile project(':android-sqlite-access')
+    compile 'istat.android.data.access.sqlite:istat-access-sqlite:1.1.2'
+    compile 'istat.android.network.http:istat-network:2.5.2'
+    compile 'istat.android.telephony.sms:istat-sms:1.2.0'
 }

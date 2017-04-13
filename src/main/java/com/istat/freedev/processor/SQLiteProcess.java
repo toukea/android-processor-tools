@@ -10,7 +10,7 @@ import istat.android.data.access.sqlite.SQLiteUpdate;
  * Created by istat on 03/01/17.
  */
 
-public class SQLiteProcess<Result, Error extends Process.ProcessError> extends Process<Result, Error> {
+public class SQLiteProcess<Result, Error extends Throwable> extends Process<Result, Error> {
     Thread thread;
 
     public SQLiteProcess() {

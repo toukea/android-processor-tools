@@ -7,5 +7,5 @@ import com.istat.freedev.processor.Process;
  * Created by istat on 09/01/17.
  */
 
-public class DownloadProcess<Result, Error extends Process.ProcessError> extends HttpProcess<Result, Error> {
+public class DownloadProcess<Result, Error extends Throwable> extends HttpProcess<Result, Error> {
 }
