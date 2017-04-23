@@ -1,5 +1,6 @@
 package com.istat.freedev.processor.utils;
 
+import com.istat.freedev.processor.ProcessManager;
 import com.istat.freedev.processor.Processor;
 
 /**
@@ -19,5 +20,9 @@ public class ProcessUnit {
 
     public Processor getProcessor() {
         return processor;
+    }
+
+    public ProcessManager getProcessManager() {
+        return processor.getProcessManager();
     }
 }

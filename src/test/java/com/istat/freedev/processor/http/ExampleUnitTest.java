@@ -34,7 +34,7 @@ public class ExampleUnitTest {
         @Override
         public void onPop(Object intence) {
             AsyncHttp.fromSimpleHttp().
-                    setQueryCallBack(this).
+                    setQueryCallback(this).
                     doGet("http://");
         }
 
@@ -44,7 +44,6 @@ public class ExampleUnitTest {
                 SQLite.SQL sql=SQLite.fromConnection("dbnAME");
                 sql.select(this.getClass());
                 sql.close();
-                SQLite.fromPath(null,"");
             } catch (Exception e) {
                 e.printStackTrace();
             }
