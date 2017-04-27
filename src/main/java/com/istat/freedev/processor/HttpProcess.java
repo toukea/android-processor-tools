@@ -7,12 +7,14 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.util.HashMap;
 
 import istat.android.network.http.AsyncHttp;
 import istat.android.network.http.HttpAsyncQuery;
 import istat.android.network.http.HttpQuery;
 import istat.android.network.http.HttpQueryError;
 import istat.android.network.http.interfaces.DownloadHandler;
+import istat.android.network.http.interfaces.ProgressionListener;
 import istat.android.network.http.interfaces.UpLoadHandler;
 import istat.android.network.utils.ToolKits;
 
@@ -20,52 +22,46 @@ import istat.android.network.utils.ToolKits;
  * Created by istat on 03/11/16.
  */
 
-public class HttpProcess<Result, Error extends Throwable> extends Process<Result, Error> implements HttpAsyncQuery.HttpQueryCallback, DownloadHandler {
+public abstract class HttpProcess<Result, Error extends Throwable> extends Process<Result, Error> implements HttpAsyncQuery.HttpQueryCallback, DownloadHandler {
+
     HttpAsyncQuery asyncQ;
-    AsyncHttp asyncHttp;
-
-
-    public final boolean execute(ProcessManager processManager, String url, HttpQuery http) {
-        try {
-            processManager.execute(this, http, url);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+    ProgressionListener<Integer> downloadProgressListener;
 
     @Override
     protected final void onExecute(Object... vars) {
-        String url = null;
-        HttpQuery<?> http = null;
-        if (vars != null || vars.length > 0) {
-            for (int i = 0; i < 4; i++) {
-                Object var = vars[i];
-                if (var != null) {
-                    if (var instanceof HttpQuery) {
-                        http = (HttpQuery<?>) var;
-                    } else if (var instanceof String) {
-                        url = var.toString();
-                    }
-                }
-                if (i >= vars.length - 1) {
+        String method = vars[0] + "";
+        String url = vars[1] + "";
+        HashMap<String, String> params = new HashMap<>();
+        HashMap<String, String> headers = new HashMap<>();
+        int methodInt = HttpAsyncQuery.TYPE_GET;
+        if (method.matches("\\d+")) {
+            methodInt = Integer.parseInt(method);
+        } else {
+            method = method.toUpperCase();
+            switch ((method)) {
+                case "GET":
+                    methodInt = HttpAsyncQuery.TYPE_GET;
                     break;
-                }
+                case "POST":
+                    methodInt = HttpAsyncQuery.TYPE_POST;
+                    break;
+                case "PUT":
+                    methodInt = HttpAsyncQuery.TYPE_PUT;
+                    break;
+                case "HEAD":
+                    methodInt = HttpAsyncQuery.TYPE_HEAD;
+                    break;
+                case "PATCH":
+                    methodInt = HttpAsyncQuery.TYPE_PATCH;
+                    break;
+                case "DELETE":
+                    methodInt = HttpAsyncQuery.TYPE_DELETE;
+                    break;
             }
         }
-        this.asyncQ = onProceed(url, http);
-        this.asyncQ.setDownloadHandler(this);
-        onPostProceed(url, http, executionVariables);
-    }
-
-
-    protected HttpAsyncQuery onProceed(String url, HttpQuery<?> http) {
-        asyncQ = AsyncHttp.from(http).doGet(this, url);
-        return asyncQ;
-    }
-
-    protected void onPostProceed(String url, HttpQuery<?> http, Object[] executionVariables) {
+        AsyncHttp asyncHttp = onCreateAsyncHttp(method, url, params, headers, vars);
+        asyncHttp.useDownloader(this, this.downloadProgressListener);
+        asyncQ = asyncHttp.doQuery(methodInt, this, url);
     }
 
 
@@ -147,6 +143,12 @@ public class HttpProcess<Result, Error extends Throwable> extends Process<Result
         notifyProcessAborted();
     }
 
+    public void setDownloadProgressListener(ProgressionListener<Integer> downloadProgressListener) {
+        this.downloadProgressListener = downloadProgressListener;
+    }
+
+    protected abstract AsyncHttp onCreateAsyncHttp(String method, String url, HashMap<String, String> params, HashMap<String, String> headers, Object... otherVars);
+
     @Override
     public Object onBuildResponseBody(HttpURLConnection httpURLConnection, InputStream inputStream) throws Exception {
         try {
@@ -155,25 +157,6 @@ public class HttpProcess<Result, Error extends Throwable> extends Process<Result
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
-    }
-
-    DownloadHandler downloadHandler = new DownloadHandler() {
-        @Override
-        public Object onBuildResponseBody(HttpURLConnection httpURLConnection, InputStream inputStream) throws Exception {
-            try {
-                String incomingData = ToolKits.Stream.streamToString(inputStream);
-                return new JSONObject(incomingData);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    };
-    UpLoadHandler upLoadHandler;
-
-    public static HttpProcess from(AsyncHttp http) {
-//        HttpProcess process
         return null;
     }
 }

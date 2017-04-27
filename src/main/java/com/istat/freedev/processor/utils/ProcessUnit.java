@@ -8,14 +8,17 @@ import com.istat.freedev.processor.Processor;
  */
 
 public class ProcessUnit {
+    private String nameSpace;
     Processor processor;
 
     protected ProcessUnit() {
-        processor = Processor.from(this.getClass().getCanonicalName());
+        this.nameSpace = this.getClass().getCanonicalName();
+        processor = Processor.from(this.nameSpace);
     }
 
-    protected ProcessUnit(String processorTag) {
-        processor = Processor.from(processorTag);
+    protected ProcessUnit(String nameSpace) {
+        this.nameSpace = nameSpace;
+        processor = Processor.from(this.nameSpace);
     }
 
     public Processor getProcessor() {
@@ -24,5 +27,13 @@ public class ProcessUnit {
 
     public ProcessManager getProcessManager() {
         return processor.getProcessManager();
+    }
+
+    public String getNameSpace() {
+        return nameSpace;
+    }
+
+    public boolean cancel() {
+        return getProcessManager().cancelAll() > 0;
     }
 }

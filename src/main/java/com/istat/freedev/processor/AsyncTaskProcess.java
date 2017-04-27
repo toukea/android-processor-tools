@@ -22,26 +22,15 @@ import istat.android.network.utils.StreamOperationTools;
  * Created by istat on 03/11/16.
  */
 
-public class AsyncTaskProcess<Result, Error extends Throwable> extends Process<Result, Error> {
+public abstract class AsyncTaskProcess<Result, Error extends Throwable> extends Process<Result, Error> {
     AsyncTask asyncTask;
 
     @Override
     protected final void onExecute(Object... vars) {
-
-        if (asyncTask != null) {
-            asyncTask.execute(vars);
-        }
+        asyncTask = onCreateAsyncTask(vars);
     }
 
-    @Override
-    protected final void onResume() {
-
-    }
-
-    @Override
-    protected final void onPaused() {
-
-    }
+    protected abstract AsyncTask onCreateAsyncTask(Object... vars);
 
     @Override
     protected final void onStopped() {
