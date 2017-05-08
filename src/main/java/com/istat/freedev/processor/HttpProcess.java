@@ -3,7 +3,6 @@ package com.istat.freedev.processor;
 
 import android.util.Log;
 
-import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -14,7 +13,6 @@ import istat.android.network.http.HttpAsyncQuery;
 import istat.android.network.http.HttpQueryError;
 import istat.android.network.http.interfaces.DownloadHandler;
 import istat.android.network.http.interfaces.ProgressionListener;
-import istat.android.network.utils.ToolKits;
 
 /**
  * Created by istat on 03/11/16.
@@ -57,7 +55,7 @@ public abstract class HttpProcess<Result, Error extends Throwable> extends Proce
                     break;
             }
         }
-        AsyncHttp asyncHttp = onCreateAsyncHttp(method, url, params, headers, vars);
+        AsyncHttp asyncHttp = onCreateAsyncHttp(params, headers, vars);
         asyncHttp.useDownloader(this, this.downloadProgressListener);
         asyncQ = asyncHttp.doQuery(methodInt, this, url);
     }
@@ -145,7 +143,7 @@ public abstract class HttpProcess<Result, Error extends Throwable> extends Proce
         this.downloadProgressListener = downloadProgressListener;
     }
 
-    protected abstract AsyncHttp onCreateAsyncHttp(String method, String url, HashMap<String, ?> params, HashMap<String, String> headers, Object... otherVars);
+    protected abstract AsyncHttp onCreateAsyncHttp(HashMap<String, ?> params, HashMap<String, String> headers, Object... otherVars);
 
     @Override
     public final Object onBuildResponseBody(HttpURLConnection httpURLConnection, InputStream inputStream) throws Exception {
@@ -156,7 +154,7 @@ public abstract class HttpProcess<Result, Error extends Throwable> extends Proce
         }
     }
 
-    protected abstract Result onBuildErrorResponseBody(HttpURLConnection httpURLConnection, InputStream inputStream);
+    protected abstract Error onBuildErrorResponseBody(HttpURLConnection httpURLConnection, InputStream inputStream);
 
     protected abstract Result onBuildSuccessResponseBody(HttpURLConnection httpURLConnection, InputStream inputStream);
 }
