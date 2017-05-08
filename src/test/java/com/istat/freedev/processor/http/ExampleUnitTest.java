@@ -1,6 +1,11 @@
 package com.istat.freedev.processor.http;
 
+import com.istat.freedev.processor.ProcessManager;
+import com.istat.freedev.processor.Processor;
+
 import org.junit.Test;
+
+import java.util.HashMap;
 
 import istat.android.data.access.sqlite.SQLite;
 import istat.android.network.http.AsyncHttp;
@@ -18,6 +23,13 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
+    }
+
+    private void testHttpProcess() {
+        TestHttpProcess process = new TestHttpProcess();
+        HashMap<String, String> headers = new HashMap<>();
+        HashMap<String, String> params = new HashMap<>();
+        Processor.from("machine").execute(process, "GET", "http://www.google.com", headers, params);
     }
 
 
@@ -41,7 +53,7 @@ public class ExampleUnitTest {
         @Override
         public void onHttpSuccess(HttpAsyncQuery.HttpQueryResponse result) {
             try {
-                SQLite.SQL sql=SQLite.fromConnection("dbnAME");
+                SQLite.SQL sql = SQLite.fromConnection("dbnAME");
                 sql.select(this.getClass());
                 sql.close();
             } catch (Exception e) {

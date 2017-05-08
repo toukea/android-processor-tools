@@ -2,21 +2,6 @@ package com.istat.freedev.processor;
 
 
 import android.os.AsyncTask;
-import android.util.Log;
-
-import org.json.JSONObject;
-
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.util.HashMap;
-
-import istat.android.network.http.AsyncHttp;
-import istat.android.network.http.HttpAsyncQuery;
-import istat.android.network.http.HttpQuery;
-import istat.android.network.http.HttpQueryError;
-import istat.android.network.http.SimpleHttpQuery;
-import istat.android.network.http.interfaces.DownloadHandler;
-import istat.android.network.utils.StreamOperationTools;
 
 /**
  * Created by istat on 03/11/16.

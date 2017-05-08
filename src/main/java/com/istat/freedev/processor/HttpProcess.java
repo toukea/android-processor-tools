@@ -11,11 +11,9 @@ import java.util.HashMap;
 
 import istat.android.network.http.AsyncHttp;
 import istat.android.network.http.HttpAsyncQuery;
-import istat.android.network.http.HttpQuery;
 import istat.android.network.http.HttpQueryError;
 import istat.android.network.http.interfaces.DownloadHandler;
 import istat.android.network.http.interfaces.ProgressionListener;
-import istat.android.network.http.interfaces.UpLoadHandler;
 import istat.android.network.utils.ToolKits;
 
 /**
@@ -147,16 +145,18 @@ public abstract class HttpProcess<Result, Error extends Throwable> extends Proce
         this.downloadProgressListener = downloadProgressListener;
     }
 
-    protected abstract AsyncHttp onCreateAsyncHttp(String method, String url, HashMap<String, String> params, HashMap<String, String> headers, Object... otherVars);
+    protected abstract AsyncHttp onCreateAsyncHttp(String method, String url, HashMap<String, ?> params, HashMap<String, String> headers, Object... otherVars);
 
     @Override
-    public Object onBuildResponseBody(HttpURLConnection httpURLConnection, InputStream inputStream) throws Exception {
-        try {
-            String incomingData = ToolKits.Stream.streamToString(inputStream);
-            return new JSONObject(incomingData);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public final Object onBuildResponseBody(HttpURLConnection httpURLConnection, InputStream inputStream) throws Exception {
+        if (HttpAsyncQuery.HttpQueryResponse.isSuccessCode(httpURLConnection.getResponseCode())) {
+            return onBuildSuccessResponseBody(httpURLConnection, inputStream);
+        } else {
+            return onBuildErrorResponseBody(httpURLConnection, inputStream);
         }
-        return null;
     }
+
+    protected abstract Result onBuildErrorResponseBody(HttpURLConnection httpURLConnection, InputStream inputStream);
+
+    protected abstract Result onBuildSuccessResponseBody(HttpURLConnection httpURLConnection, InputStream inputStream);
 }
