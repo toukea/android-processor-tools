@@ -18,7 +18,7 @@ import istat.android.network.http.interfaces.ProgressionListener;
  * Created by istat on 03/11/16.
  */
 
-public abstract class HttpProcess<Result, Error extends Throwable> extends Process<Result, Error> implements HttpAsyncQuery.HttpQueryCallback, DownloadHandler {
+public abstract class HttpProcess<Result, Error extends Throwable> extends Process<Result, Error> implements HttpAsyncQuery.HttpQueryCallback {
 
     HttpAsyncQuery asyncQ;
     ProgressionListener<Integer> downloadProgressListener;
@@ -55,8 +55,8 @@ public abstract class HttpProcess<Result, Error extends Throwable> extends Proce
                     break;
             }
         }
-        AsyncHttp asyncHttp = onCreateAsyncHttp(params, headers, vars);
-        asyncHttp.useDownloader(this, this.downloadProgressListener);
+        AsyncHttp asyncHttp = onCreateAsyncHttp(headers, params, vars);
+        asyncHttp.useDownloader(getInternalDownloader(), this.downloadProgressListener);
         asyncQ = asyncHttp.doQuery(methodInt, this, url);
     }
 
@@ -143,18 +143,44 @@ public abstract class HttpProcess<Result, Error extends Throwable> extends Proce
         this.downloadProgressListener = downloadProgressListener;
     }
 
-    protected abstract AsyncHttp onCreateAsyncHttp(HashMap<String, ?> params, HashMap<String, String> headers, Object... otherVars);
+    protected abstract AsyncHttp onCreateAsyncHttp(HashMap<String, String> headers, HashMap<String, ?> params, Object... otherVars);
 
-    @Override
-    public final Object onBuildResponseBody(HttpURLConnection httpURLConnection, InputStream inputStream) throws Exception {
-        if (HttpAsyncQuery.HttpQueryResponse.isSuccessCode(httpURLConnection.getResponseCode())) {
-            return onBuildSuccessResponseBody(httpURLConnection, inputStream);
-        } else {
-            return onBuildErrorResponseBody(httpURLConnection, inputStream);
-        }
+    protected abstract Error onHandleError(HttpURLConnection httpURLConnection, InputStream inputStream) throws Exception;
+
+    protected abstract Result onHandleResult(HttpURLConnection httpURLConnection, InputStream inputStream) throws Exception;
+
+    public DownloadHandler getInternalDownloader() {
+        return new DownloadHandler() {
+            @Override
+            public Object onBuildResponseBody(HttpURLConnection connexion, InputStream stream) throws Exception {
+                if (HttpAsyncQuery.HttpQueryResponse.isSuccessCode(connexion.getResponseCode())) {
+                    return onHandleResult(connexion, stream);
+                } else {
+                    return onHandleError(connexion, stream);
+                }
+            }
+        };
     }
 
-    protected abstract Error onBuildErrorResponseBody(HttpURLConnection httpURLConnection, InputStream inputStream);
+    public static <T extends HttpProcess> T execute(ProcessManager pm, T process, String method, String url, Object... otherParams) {
+        return execute(pm, process, method, url, null, null, otherParams);
+    }
 
-    protected abstract Result onBuildSuccessResponseBody(HttpURLConnection httpURLConnection, InputStream inputStream);
+    public static <T extends HttpProcess> T execute(ProcessManager pm, T process, String method, String url, HashMap<String, String> headers, Object... otherParams) {
+        return execute(pm, process, method, url, headers, null, otherParams);
+    }
+
+    public static <T extends HttpProcess> T execute(ProcessManager pm, T process, String
+            method, String url, HashMap<String, String> headers, HashMap<?, ?> params, Object...
+                                                            otherParams) {
+        return pm.execute(process, method, url, params, headers, otherParams);
+    }
+
+    public static <T extends HttpProcess> T execute(ProcessManager pm, String PID, T process, String method, String url, HashMap<String, String> headers, HashMap<?, ?> params, Object... otherParams) throws ProcessManager.ProcessException {
+        return pm.execute(PID, process, method, url, params, headers, otherParams);
+    }
+
+    public static <T extends HttpProcess> T execute(ProcessManager pm, String PID, T process, String method, String url, HashMap<?, ?> params) throws ProcessManager.ProcessException {
+        return pm.execute(PID, process, method, url, params, null, new Object[0]);
+    }
 }
