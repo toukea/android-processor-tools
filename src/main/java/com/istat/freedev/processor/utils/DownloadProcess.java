@@ -6,8 +6,13 @@ package com.istat.freedev.processor.utils;
  */
 
 public class DownloadProcess<Result, Error extends Throwable> extends DefaultHttpProcess<Result, Error> {
-    public DownloadProcess() {
 
+
+    public DownloadProcess(Class<Result> resultCLass, Class<Error> errorClass) {
+        super(resultCLass, errorClass);
     }
 
+    public DownloadProcess(AsyncHttpCreator creator, Class<Result> resultCLass, Class<Error> errorClass) {
+        super(creator, resultCLass, errorClass);
+    }
 }

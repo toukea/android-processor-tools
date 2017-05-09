@@ -2,6 +2,8 @@ package com.istat.freedev.processor.http;
 
 import com.istat.freedev.processor.HttpProcess;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.HashMap;
 
 import istat.android.network.http.AsyncHttp;
@@ -12,8 +14,19 @@ import istat.android.network.http.AsyncHttp;
 
 public class TestHttpProcess extends HttpProcess<String, TestHttpProcess.HttpError> {
 
+
     @Override
-    protected AsyncHttp onCreateAsyncHttp(String method, String url, HashMap<String, String> params, HashMap<String, String> headers, Object... otherVars) {
+    protected AsyncHttp onCreateAsyncHttp(HashMap<String, String> headers, HashMap<String, ?> params, Object... otherVars) {
+        return null;
+    }
+
+    @Override
+    protected HttpError onHandleError(HttpURLConnection httpURLConnection, InputStream inputStream) throws Exception {
+        return null;
+    }
+
+    @Override
+    protected String onHandleResult(HttpURLConnection httpURLConnection, InputStream inputStream) throws Exception {
         return null;
     }
 
