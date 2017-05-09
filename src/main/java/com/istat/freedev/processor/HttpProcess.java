@@ -162,25 +162,97 @@ public abstract class HttpProcess<Result, Error extends Throwable> extends Proce
         };
     }
 
-    public static <T extends HttpProcess> T execute(ProcessManager pm, T process, String method, String url, Object... otherParams) {
-        return execute(pm, process, method, url, null, null, otherParams);
-    }
 
-    public static <T extends HttpProcess> T execute(ProcessManager pm, T process, String method, String url, HashMap<String, String> headers, Object... otherParams) {
-        return execute(pm, process, method, url, headers, null, otherParams);
-    }
+    public final static class Executor {
+        String method;
+        String url;
+        HashMap<String, String> headers;
+        HashMap<?, ?> params;
+        Object[] otherParams;
+        ProcessManager processManager;
 
-    public static <T extends HttpProcess> T execute(ProcessManager pm, T process, String
-            method, String url, HashMap<String, String> headers, HashMap<?, ?> params, Object...
-                                                            otherParams) {
-        return pm.execute(process, method, url, params, headers, otherParams);
-    }
+        public Executor(ProcessManager processManager) {
+            this.processManager = processManager;
+        }
 
-    public static <T extends HttpProcess> T execute(ProcessManager pm, String PID, T process, String method, String url, HashMap<String, String> headers, HashMap<?, ?> params, Object... otherParams) throws ProcessManager.ProcessException {
-        return pm.execute(PID, process, method, url, params, headers, otherParams);
-    }
+        public String getMethod() {
+            return method;
+        }
 
-    public static <T extends HttpProcess> T execute(ProcessManager pm, String PID, T process, String method, String url, HashMap<?, ?> params) throws ProcessManager.ProcessException {
-        return pm.execute(PID, process, method, url, params, null, new Object[0]);
+        public void setMethod(String method) {
+            this.method = method;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public HashMap<String, String> getHeaders() {
+            return headers;
+        }
+
+        public void setHeaders(HashMap<String, String> headers) {
+            this.headers = headers;
+        }
+
+        public HashMap<?, ?> getParams() {
+            return params;
+        }
+
+        public void setParams(HashMap<?, ?> params) {
+            this.params = params;
+        }
+
+        public Object[] getOtherParams() {
+            return otherParams;
+        }
+
+        public void setOtherParams(Object[] otherParams) {
+            this.otherParams = otherParams;
+        }
+
+        public ProcessManager getProcessManager() {
+            return processManager;
+        }
+
+        public void setProcessManager(ProcessManager processManager) {
+            this.processManager = processManager;
+        }
+
+        //-------------------------------------
+        public <T extends HttpProcess> T execute(T process) {
+            return execute(getProcessManager(), process, method, url, headers, params, otherParams);
+        }
+
+        public <T extends HttpProcess> T execute(String PID, T process) throws ProcessManager.ProcessException {
+            return getProcessManager().execute(PID, process, method, url, params, headers, params, otherParams);
+        }
+        //----------------------------------------------
+
+        public static <T extends HttpProcess> T execute(ProcessManager pm, T process, String method, String url, Object... otherParams) {
+            return execute(pm, process, method, url, null, null, otherParams);
+        }
+
+        public static <T extends HttpProcess> T execute(ProcessManager pm, T process, String method, String url, HashMap<String, String> headers, Object... otherParams) {
+            return execute(pm, process, method, url, headers, null, otherParams);
+        }
+
+        public static <T extends HttpProcess> T execute(ProcessManager pm, T process, String
+                method, String url, HashMap<String, String> headers, HashMap<?, ?> params, Object...
+                                                                otherParams) {
+            return pm.execute(process, method, url, params, headers, otherParams);
+        }
+
+        public static <T extends HttpProcess> T execute(ProcessManager pm, String PID, T process, String method, String url, HashMap<String, String> headers, HashMap<?, ?> params, Object... otherParams) throws ProcessManager.ProcessException {
+            return pm.execute(PID, process, method, url, params, headers, otherParams);
+        }
+
+        public static <T extends HttpProcess> T execute(ProcessManager pm, String PID, T process, String method, String url, HashMap<?, ?> params) throws ProcessManager.ProcessException {
+            return pm.execute(PID, process, method, url, params, null, new Object[0]);
+        }
     }
 }
