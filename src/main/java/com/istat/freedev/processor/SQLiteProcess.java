@@ -10,7 +10,7 @@ import istat.android.data.access.sqlite.SQLiteUpdate;
  * Created by istat on 03/01/17.
  */
 
-public class SQLiteProcess<Result, Error extends Throwable> extends Process<Result, Error> {
+public class SQLiteProcess<Result> extends Process<Result, Exception> {
     Thread thread;
 
     public SQLiteProcess() {
@@ -19,27 +19,22 @@ public class SQLiteProcess<Result, Error extends Throwable> extends Process<Resu
 
     @Override
     protected void onExecute(final Object... vars) {
-        thread = new Thread() {
-            @Override
-            public void run() {
-                for (Object sql : vars) {
-                    if (sql instanceof SQLiteSelect) {
-                    } else if (sql instanceof SQLiteSelect) {
-
-                    } else if (sql instanceof SQLiteUpdate) {
-
-                    } else if (sql instanceof SQLiteDelete) {
-
-                    } else if (sql instanceof SQLiteInsert) {
-
-                    } else if (sql instanceof SQLiteMerge) {
-
-                    }
-                }
-
+        for (Object sql : vars) {
+            if (sql instanceof SQLiteSelect) {
+            } else if (sql instanceof SQLiteSelect) {
+                thread = ((SQLiteSelect) sql).executeAsync();
+            } else if (sql instanceof SQLiteUpdate) {
+                thread = ((SQLiteUpdate) sql).where1().executeAsync();
+            } else if (sql instanceof SQLiteUpdate.Updater) {
+                thread = ((SQLiteUpdate.Updater) sql).executeAsync();
+            } else if (sql instanceof SQLiteDelete) {
+                thread = ((SQLiteUpdate.Updater) sql).executeAsync();
+            } else if (sql instanceof SQLiteInsert) {
+                thread = ((SQLiteUpdate.Updater) sql).executeAsync();
+            } else if (sql instanceof SQLiteMerge) {
+                thread = ((SQLiteUpdate.Updater) sql).executeAsync();
             }
-        };
-        thread.start();
+        }
     }
 
     @Override
@@ -77,10 +72,4 @@ public class SQLiteProcess<Result, Error extends Throwable> extends Process<Resu
         return false;
     }
 
-    public class SQLiteSelectProcess<T> extends SQLiteProcess<T, Error> {
-        final void execute(ProcessManager manager, SQLiteSelect... vars) {
-            super.execute(manager, (Object[]) vars);
-        }
-
-    }
 }

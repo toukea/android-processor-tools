@@ -91,7 +91,7 @@ public class SimpleHttpProcess<Result, Error extends Throwable> extends HttpProc
                     .addHttpParams(params);
         }
     };
-    public final static AsyncHttpCreator BODYPART_ASYNC_HTTP_CREATOR = new AsyncHttpCreator() {
+    public final static AsyncHttpCreator BODY_PART_ASYNC_HTTP_CREATOR = new AsyncHttpCreator() {
 
         @Override
         public AsyncHttp onCreateAsyncHttp(HashMap<String, ?> params, HashMap<String, String> headers, Object... otherVars) {
@@ -108,8 +108,4 @@ public class SimpleHttpProcess<Result, Error extends Throwable> extends HttpProc
                     .addHttpParams(params);
         }
     };
-
-    public static class Builder {
-
-    }
 }
