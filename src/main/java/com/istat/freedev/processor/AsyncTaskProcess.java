@@ -11,11 +11,11 @@ public abstract class AsyncTaskProcess<Result, Error extends Throwable> extends 
     AsyncTask asyncTask;
 
     @Override
-    protected final void onExecute(Object... vars) {
+    protected final void onExecute(ExecutionVariables vars) {
         asyncTask = onCreateAsyncTask(vars);
     }
 
-    protected abstract AsyncTask onCreateAsyncTask(Object... vars);
+    protected abstract AsyncTask onCreateAsyncTask(ExecutionVariables vars);
 
     @Override
     protected final void onStopped() {

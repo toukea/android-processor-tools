@@ -18,8 +18,8 @@ public class SQLiteProcess<Result> extends Process<Result, Exception> {
     }
 
     @Override
-    protected void onExecute(final Object... vars) {
-        for (Object sql : vars) {
+    protected void onExecute(final ExecutionVariables vars) {
+        for (Object sql : vars.asArray()) {
             if (sql instanceof SQLiteSelect) {
             } else if (sql instanceof SQLiteSelect) {
                 thread = ((SQLiteSelect) sql).executeAsync();

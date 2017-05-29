@@ -5,8 +5,10 @@ package com.istat.freedev.processor;
  */
 
 public class FileProcess <Result, Error extends Throwable> extends Process<Result, Error>{
+
+
     @Override
-    protected void onExecute(Object... vars) {
+    protected void onExecute(ExecutionVariables executionVariables) {
 
     }
 

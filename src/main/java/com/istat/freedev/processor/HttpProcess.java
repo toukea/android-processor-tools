@@ -24,9 +24,9 @@ public abstract class HttpProcess<Result, Error extends Throwable> extends Proce
     ProgressionListener<Integer> downloadProgressListener;
 
     @Override
-    protected final void onExecute(Object... vars) {
-        String method = vars[0] + "";
-        String url = vars[1] + "";
+    protected final void onExecute(ExecutionVariables vars) {
+        String method = vars.getVariable(0);
+        String url = vars.getVariable(1);
         HashMap<String, String> params = new HashMap<>();
         HashMap<String, String> headers = new HashMap<>();
         int methodInt = HttpAsyncQuery.TYPE_GET;
