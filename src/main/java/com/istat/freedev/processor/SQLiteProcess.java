@@ -77,9 +77,9 @@ public class SQLiteProcess<Result, Error extends Process.ProcessError> extends P
         return false;
     }
 
-    public class SQLiteSelectProcess<T> extends SQLiteProcess<T, Error> {
+    public class SQLiteSelectProcess<T extends SQLiteSelect> extends SQLiteProcess<T, Error > {
         final void execute(ProcessManager manager, SQLiteSelect... vars) {
-            super.execute(manager, (Object[]) vars);
+            super.execute(manager, vars);
         }
 
     }

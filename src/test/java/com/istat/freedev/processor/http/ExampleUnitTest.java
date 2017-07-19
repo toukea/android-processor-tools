@@ -34,7 +34,7 @@ public class ExampleUnitTest {
         @Override
         public void onPop(Object intence) {
             AsyncHttp.fromSimpleHttp().
-                    setQueryCallBack(this).
+                    setQueryCallback(this).
                     doGet("http://");
         }
 
