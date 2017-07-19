@@ -1,10 +1,9 @@
 apply plugin: 'com.android.library'
 ext {
-    PUBLISH_GROUP_ID = 'com.istat.freedev.processor.tools'
-    PUBLISH_ARTIFACT_ID = 'istat-processing'
+    PUBLISH_GROUP_ID = 'com.istat.freedev.processor'
+    PUBLISH_ARTIFACT_ID = 'android-processor-tools'
     PUBLISH_VERSION = '1.0.0'
 }
-//apply from: 'release-aar.gradle'
 apply from: 'release-jar.gradle'
 android {
     compileSdkVersion 24
@@ -33,25 +32,22 @@ android {
     }
 }
 task clearJar(type: Delete) {
-    delete '../build/libs/http-processor.jar'
+    delete '../build/libs/processor.jar'
 }
 
 task makeJar(type: Copy) {
     from('build/intermediates/bundles/release/')
     into('../build/libs/')
     include('classes.jar')
-    rename('classes.jar', 'http-processor.jar')
+    rename('classes.jar', 'processor.jar')
 }
-
-makeJar.dependsOn(clearJar, build)
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    compile project(':android-processor')
-    compile project(':android-IstatNetwork')
-    compile project(':android-sqlite-access')
+    compile project(path: ':android-sqlite-access')
+    compile project(path: ':android-processor')
+    compile project(path: ':android-IstatNetwork')
 }
