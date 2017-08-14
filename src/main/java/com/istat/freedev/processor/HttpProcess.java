@@ -21,7 +21,7 @@ import istat.android.network.http.interfaces.ProgressionListener;
 public abstract class HttpProcess<Result, Error extends Throwable> extends Process<Result, Error> implements HttpAsyncQuery.HttpQueryCallback {
 
     HttpAsyncQuery asyncQ;
-    ProgressionListener<Integer> downloadProgressListener;
+    ProgressionListener downloadProgressListener;
 
     @Override
     protected final void onExecute(ExecutionVariables vars) {
@@ -139,7 +139,7 @@ public abstract class HttpProcess<Result, Error extends Throwable> extends Proce
         notifyProcessAborted();
     }
 
-    public void setDownloadProgressListener(ProgressionListener<Integer> downloadProgressListener) {
+    public void setDownloadProgressListener(ProgressionListener downloadProgressListener) {
         this.downloadProgressListener = downloadProgressListener;
     }
 
