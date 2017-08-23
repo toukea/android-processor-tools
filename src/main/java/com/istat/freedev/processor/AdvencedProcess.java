@@ -1,5 +1,7 @@
 package com.istat.freedev.processor;
 
+import com.istat.freedev.processor.Process;
+
 /**
  * Created by istat on 25/05/17.
  */
