@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 
+import com.istat.freedev.processor.abs.AbsAsyncTaskProcess;
+
 import istat.android.network.http.AsyncHttp;
 import istat.android.network.http.HttpAsyncQuery;
 
@@ -11,7 +13,7 @@ import istat.android.network.http.HttpAsyncQuery;
  * Created by Istat Toukea on 23/08/2017.
  */
 
-public class AsyncHttpProcess<Result> extends AsyncTaskProcess<Result, Exception> {
+public class AsyncHttpProcess<Result> extends AbsAsyncTaskProcess<Result, Exception> {
     AsyncHttp asyncHttp;
     int method;
     String url;

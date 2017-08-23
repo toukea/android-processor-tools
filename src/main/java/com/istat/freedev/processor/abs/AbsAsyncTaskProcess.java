@@ -1,13 +1,15 @@
-package com.istat.freedev.processor;
+package com.istat.freedev.processor.abs;
 
 
 import android.os.AsyncTask;
+
+import com.istat.freedev.processor.Process;
 
 /**
  * Created by istat on 03/11/16.
  */
 
-public abstract class AsyncTaskProcess<Result, Error extends Throwable> extends Process<Result, Error> {
+public abstract class AbsAsyncTaskProcess<Result, Error extends Throwable> extends Process<Result, Error> {
     AsyncTask asyncTask;
 
     @Override
