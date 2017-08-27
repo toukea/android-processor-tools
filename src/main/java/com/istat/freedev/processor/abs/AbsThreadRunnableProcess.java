@@ -15,7 +15,7 @@ public abstract class AbsThreadRunnableProcess<Result, Error extends Throwable> 
     Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
-    protected Thread onCreateThread(final Process.ExecutionVariables executionVariables) {
+    protected Thread onCreateThread(final Process<Result, Error>.ExecutionVariables executionVariables) {
         return new Thread(new Runnable() {
             @Override
             public void run() {
@@ -39,7 +39,7 @@ public abstract class AbsThreadRunnableProcess<Result, Error extends Throwable> 
         });
     }
 
-    protected abstract Result run(Process.ExecutionVariables executionVariables) throws Exception;
+    protected abstract Result run(Process<Result, Error>.ExecutionVariables executionVariables) throws Exception;
 
 
     public final static AbsThreadRunnableProcess newOne(final Runnable runnable) {
@@ -54,7 +54,7 @@ public abstract class AbsThreadRunnableProcess<Result, Error extends Throwable> 
     public final static <Result2, Error2 extends Throwable> AbsThreadRunnableProcess<Result2, Error2> newOne(final Callable<Result2> callable, Class<Result2> resultClass, Class<Error2> errorClass) {
         return new AbsThreadRunnableProcess<Result2, Error2>() {
             @Override
-            protected Result2 run(Process.ExecutionVariables executionVariables) throws Exception {
+            protected Result2 run(Process<Result2, Error2>.ExecutionVariables executionVariables) throws Exception {
                 return callable.call();
             }
         };
