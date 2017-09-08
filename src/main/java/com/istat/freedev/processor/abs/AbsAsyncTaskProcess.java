@@ -47,8 +47,7 @@ public abstract class AbsAsyncTaskProcess<Result, Error extends Throwable> exten
 
     @Override
     public boolean isPaused() {
-
-        return false;
+        throw new RuntimeException("Not yet supported");
     }
 
 }
