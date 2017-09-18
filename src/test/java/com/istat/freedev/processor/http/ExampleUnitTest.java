@@ -11,6 +11,7 @@ import istat.android.data.access.sqlite.SQLite;
 import istat.android.network.http.AsyncHttp;
 import istat.android.network.http.HttpAsyncQuery;
 import istat.android.network.http.HttpQueryError;
+import istat.android.network.http.SimpleHttpQuery;
 
 import static org.junit.Assert.*;
 
@@ -26,7 +27,8 @@ public class ExampleUnitTest {
     }
 
     private void testHttpProcess() {
-        TestHttpProcess process = new TestHttpProcess();
+        AsyncHttp http = AsyncHttp.fromSimpleHttp();
+        TestHttpProcess process = new TestHttpProcess(http);
         HashMap<String, String> headers = new HashMap<>();
         HashMap<String, String> params = new HashMap<>();
         Processor.from("machine").execute(process, "GET", "http://www.google.com", headers, params);

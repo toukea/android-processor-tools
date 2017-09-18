@@ -8,12 +8,13 @@ import com.istat.freedev.processor.abs.AbsAsyncTaskProcess;
 
 import istat.android.network.http.AsyncHttp;
 import istat.android.network.http.HttpAsyncQuery;
+import istat.android.network.http.HttpQueryError;
 
 /**
  * Created by Istat Toukea on 23/08/2017.
  */
 
-public class AsyncHttpProcess<Result> extends AbsAsyncTaskProcess<Result, Exception> {
+public class AsyncHttpProcess<Result> extends AbsAsyncTaskProcess<Result, HttpQueryError> {
     AsyncHttp asyncHttp;
     int method;
     String url;
@@ -39,17 +40,33 @@ public class AsyncHttpProcess<Result> extends AbsAsyncTaskProcess<Result, Except
             @Override
             public void onWhen(HttpAsyncQuery.HttpQueryResponse resp, HttpAsyncQuery query, int when) {
                 if (resp.isSuccess()) {
-                    notifyProcessSuccess((Result) resp.optBody());
-                } else if (resp.isAccepted()) {
-                    notifyProcessError(resp.getError());
+                    onSuccessHappen(resp, (Result) resp.optBody());
+                } else if (resp.isAccepted() &&  resp.getError() instanceof HttpQueryError) {
+                    onErrorHappen(resp, (HttpQueryError) resp.getError());
                 } else if (query.isAborted()) {
-                    notifyProcessAborted();
+                    onAbortionHappen();
                 } else {
-                    notifyProcessFailed(resp.getError());
+                    onFailingHappen(resp.getError());
                 }
             }
         }, HttpAsyncQuery.WHEN_ANYWAY);
         return httpAsyncQuery;
+    }
+
+    protected void onSuccessHappen(HttpAsyncQuery.HttpQueryResponse resp, Result result) {
+        notifyProcessSuccess(result);
+    }
+
+    protected void onErrorHappen(HttpAsyncQuery.HttpQueryResponse resp, HttpQueryError error) {
+        notifyProcessError(error);
+    }
+
+    protected void onFailingHappen(Exception error) {
+        notifyProcessFailed(error);
+    }
+
+    protected void onAbortionHappen() {
+        notifyProcessAborted();
     }
 
     @Override
