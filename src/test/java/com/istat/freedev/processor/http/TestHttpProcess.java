@@ -1,7 +1,7 @@
 package com.istat.freedev.processor.http;
 
 
-import com.istat.freedev.processor.AsyncHttpProcess;
+import com.istat.freedev.processor.http.async.HttpProcess;
 
 import istat.android.network.http.AsyncHttp;
 
@@ -9,7 +9,7 @@ import istat.android.network.http.AsyncHttp;
  * Created by istat on 05/05/17.
  */
 
-public class TestHttpProcess extends AsyncHttpProcess<String> {
+public class TestHttpProcess extends HttpProcess<String> {
 
 
     public TestHttpProcess(AsyncHttp asyncHttp) {
