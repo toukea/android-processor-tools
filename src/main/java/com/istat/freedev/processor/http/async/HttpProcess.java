@@ -138,8 +138,18 @@ public class HttpProcess<Result, Error extends Throwable> extends AbsHttpProcess
         if (!TextUtils.isEmpty(this.encoding)) {
             asyncHttp.useEncoding(encoding);
         }
+        onPreExecute(http, HttpAsyncQuery.METHOD_TYPE_NAME_MAP.get(method), url);
         HttpAsyncQuery httpAsyncQuery = asyncHttp.doQuery(method, url);
+        onPostExecute(httpAsyncQuery);
         return httpAsyncQuery;
+    }
+
+
+    protected void onPreExecute(HttpQuery http, String method, String url) {
+
+    }
+
+    private void onPostExecute(HttpAsyncQuery httpAsyncQuery) {
     }
 
     protected void onSuccessHappen(HttpQueryResult result) {
@@ -205,7 +215,11 @@ public class HttpProcess<Result, Error extends Throwable> extends AbsHttpProcess
     }
 
     private int getHttpMethodInteger() {
-        return HttpAsyncQuery.TYPE_GET;
+        String method = getHttpMethod();
+        return HttpAsyncQuery.METHOD_NAME_TYPE_MAP.get(method);
     }
 
+    protected HttpAsyncQuery getAsyncTask() {
+        return asyncTask;
+    }
 }

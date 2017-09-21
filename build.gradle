@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 ext {
     PUBLISH_GROUP_ID = 'com.istat.freedev.processor'
     PUBLISH_ARTIFACT_ID = 'android-processor-tools'
-    PUBLISH_VERSION = '1.0.0'
+    PUBLISH_VERSION = '1.2.0'
 }
 apply from: 'release-jar.gradle'
 android {
@@ -50,5 +50,8 @@ dependencies {
     compile project(path: ':android-sqlite-access')
     compile project(path: ':android-processor')
     compile project(path: ':android-IstatNetwork')
+    //istat.android.data.access.sqlite:istat-access-sqlite:1.2.8
+    //istat.android.network.http:istat-network:2.5.5
+    //com.istat.freedev.processor:android-processor:1.0.0
     compile 'io.reactivex:rxjava:1.1.6'
 }

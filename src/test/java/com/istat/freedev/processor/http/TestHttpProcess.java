@@ -9,15 +9,15 @@ import istat.android.network.http.AsyncHttp;
  * Created by istat on 05/05/17.
  */
 
-public class TestHttpProcess extends HttpProcess<String> {
+public class TestHttpProcess extends HttpProcess<String, Throwable> {
 
 
     public TestHttpProcess(AsyncHttp asyncHttp) {
-        super(asyncHttp);
+        super();
     }
 
     public TestHttpProcess(AsyncHttp asyncHttp, int method, String url) {
-        super(asyncHttp, method, url);
+        super();
     }
 
 //    @Override
