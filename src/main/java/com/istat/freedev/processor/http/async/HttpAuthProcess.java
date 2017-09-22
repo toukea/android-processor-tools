@@ -24,8 +24,8 @@ public class HttpAuthProcess<Result, Error extends Throwable> extends HttpProces
     }
 
     protected final void onErrorHappen(HttpQueryError error) {
-        if (error.getCode() == 401 || error.getCode() == 403) {
-            if (onHandleError(error)) {
+        if (error.getCode() == 401) {
+            if (onHandleAuthenticationError(error)) {
                 restart(RESTART_MODE_GEOPARDISE);
             } else {
                 onUnHandledErrorHappen(error);
@@ -39,7 +39,7 @@ public class HttpAuthProcess<Result, Error extends Throwable> extends HttpProces
         super.onErrorHappen(error);
     }
 
-    private boolean onHandleError(HttpQueryError e) {
+    private boolean onHandleAuthenticationError(HttpQueryError e) {
         if (authFailErrorHandler != null) {
             return authFailErrorHandler.onError(e, getAsyncTask());
         }
