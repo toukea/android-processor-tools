@@ -74,7 +74,7 @@ public class SQLiteProcess<Result> extends Process<Result, Exception> {
 
     public class SQLiteSelectProcess<T extends SQLiteSelect> extends SQLiteProcess<T> {
         final void execute(ProcessManager manager, SQLiteSelect... vars) {
-            super.execute(manager, vars);
+            super.execute(manager, (SQLiteSelect[]) vars);
         }
     }
 }

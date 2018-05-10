@@ -26,7 +26,7 @@ public class TestHttpProcess extends HttpProcess<String, Throwable> {
 //    }
 //
 //    @Override
-//    protected HttpError onHandleError(HttpURLConnection httpURLConnection, InputStream inputStream) throws Exception {
+//    protected HttpQueryError onHandleError(HttpURLConnection httpURLConnection, InputStream inputStream) throws Exception {
 //        return null;
 //    }
 //

@@ -17,7 +17,7 @@ import istat.android.network.http.HttpQueryError;
 import istat.android.network.http.HttpQueryResponse;
 import istat.android.network.http.HttpQueryResult;
 import istat.android.network.http.interfaces.DownloadHandler;
-import istat.android.network.http.interfaces.ProgressionListener;
+import istat.android.network.http.interfaces.ProgressListener;
 import istat.android.network.utils.StreamOperationTools;
 
 /**
@@ -47,7 +47,7 @@ public class HttpProcess<Result, Error extends Throwable> extends AbsHttpProcess
         setDownloader(downloader, when);
     }
 
-    public void setDownloader(final DownloadHandler downloader, final ProgressionListener progressionListener) {
+    public void setDownloader(final DownloadHandler downloader, final ProgressListener progressionListener) {
         DownloadHandler.WHEN when = null;
         setDownloader(downloader, when, progressionListener);
     }
@@ -61,7 +61,7 @@ public class HttpProcess<Result, Error extends Throwable> extends AbsHttpProcess
 
     }
 
-    public void setDownloader(final DownloadHandler downloader, DownloadHandler.WHEN when, final ProgressionListener progressionListener) {
+    public void setDownloader(final DownloadHandler downloader, DownloadHandler.WHEN when, final ProgressListener progressionListener) {
         if (downloader == null && progressionListener == null) {
             return;
         }
@@ -153,19 +153,19 @@ public class HttpProcess<Result, Error extends Throwable> extends AbsHttpProcess
     }
 
     protected void onSuccessHappen(HttpQueryResult result) {
-        notifyProcessSuccess((Result) result.getBody());
+        notifySucceed((Result) result.getBody());
     }
 
     protected void onErrorHappen(HttpQueryError error) {
-        notifyProcessError((Error) error.getBody());
+        notifyError((Error) error.getBody());
     }
 
     protected void onFailingHappen(Throwable error) {
-        notifyProcessFailed(error);
+        notifyFailed(error);
     }
 
     protected void onAbortionHappen() {
-        notifyProcessAborted();
+        notifyAborted();
     }
 
     @Override

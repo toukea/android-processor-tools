@@ -10,11 +10,11 @@ import istat.android.network.http.HttpQueryResult;
 public class HttpResponseProcess extends HttpAuthProcess<HttpQueryResult, HttpQueryError> {
     @Override
     protected void onSuccessHappen(HttpQueryResult result) {
-        notifyProcessSuccess(result);
+        notifySucceed(result);
     }
 
     @Override
     protected void onUnHandledErrorHappen(HttpQueryError error) {
-        notifyProcessError(error);
+        notifyError(error);
     }
 }

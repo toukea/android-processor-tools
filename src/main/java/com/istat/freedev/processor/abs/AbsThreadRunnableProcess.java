@@ -24,14 +24,14 @@ public abstract class AbsThreadRunnableProcess<Result, Error extends Throwable> 
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            notifyProcessSuccess(result);
+                            notifySucceed(result);
                         }
                     });
                 } catch (final Exception e) {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            notifyProcessFailed(e);
+                            notifyFailed(e);
                         }
                     });
                 }

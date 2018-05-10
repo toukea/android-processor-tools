@@ -6,16 +6,16 @@ ext {
 }
 apply from: 'release-jar.gradle'
 android {
-    compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 26
+    buildToolsVersion '27.0.3'
     lintOptions {
         abortOnError false
     }
     defaultConfig {
         minSdkVersion 8
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 26
+//        versionCode 1
+//        versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -50,7 +50,7 @@ dependencies {
     compile project(path: ':android-sqlite-access')
     compile project(path: ':android-processor')
     compile project(path: ':android-IstatNetwork')
-    //istat.android.data.access.sqlite:istat-access-sqlite:1.2.8
+//    compile 'istat.android.data.access.sqlite:istat-access-sqlite:1.2.8'
     //istat.android.network.http:istat-network:2.5.5
     //com.istat.freedev.processor:android-processor:1.0.0
     compile 'io.reactivex:rxjava:1.1.6'

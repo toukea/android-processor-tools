@@ -14,7 +14,7 @@ public abstract class RxProcess<Result, Error extends Throwable> extends Process
 
     @Override
     protected void onExecute(final ExecutionVariables executionVariables) {
-//        mSubscription = Observable.from(new String[]{})
+//        mSubscription = Observable.boot(new String[]{})
 //                .mapMany(new Func1<String, Observable<Result>>() {
 //                    @Override
 //                    public Observable<Result> call(String s) {
