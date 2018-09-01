@@ -43,15 +43,15 @@ public abstract class AbsThreadProcess<Result, Error extends Throwable> extends 
 
     @Override
     public boolean isRunning() {
-        return thread != null && thread.isAlive();
+        return super.isRunning() && (thread != null && thread.isAlive());
     }
 
     @Override
     public boolean isCompleted() {
-        return thread != null &&
+        return super.isCompleted() || (thread != null &&
                 !thread.isInterrupted() &&
                 !thread.isAlive() &&
-                thread.getState() == Thread.State.TERMINATED;
+                thread.getState() == Thread.State.TERMINATED);
     }
 
     @Override
