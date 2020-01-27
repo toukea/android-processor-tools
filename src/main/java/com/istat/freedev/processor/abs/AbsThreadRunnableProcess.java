@@ -1,8 +1,5 @@
 package com.istat.freedev.processor.abs;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import com.istat.freedev.processor.Process;
 
 import java.util.concurrent.Callable;
@@ -12,7 +9,6 @@ import java.util.concurrent.Callable;
  */
 
 public abstract class AbsThreadRunnableProcess<Result, Error extends Throwable> extends AbsThreadProcess<Result, Error> {
-    Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected Thread onCreateThread(final Process<Result, Error>.ExecutionVariables executionVariables) {
@@ -21,22 +17,19 @@ public abstract class AbsThreadRunnableProcess<Result, Error extends Throwable> 
             public void run() {
                 try {
                     final Result result = AbsThreadRunnableProcess.this.run(executionVariables);
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            notifySucceed(result);
-                        }
-                    });
+                    notifySucceed(result);
+                } catch (final ErrorThrowingException e) {
+                    //do notthingn if this happend, it is because lib-user has called notifyErrorAndThrow(Error), the system will now dispatch Error state.
                 } catch (final Exception e) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            notifyFailed(e);
-                        }
-                    });
+                    notifyFailed(e);
                 }
             }
         });
+    }
+
+    protected final void notifyErrorAndThrow(Error error) throws RuntimeException {
+        notifyError(error);
+        throw new ErrorThrowingException();
     }
 
     protected abstract Result run(Process<Result, Error>.ExecutionVariables executionVariables) throws Exception;
@@ -51,12 +44,16 @@ public abstract class AbsThreadRunnableProcess<Result, Error extends Throwable> 
         };
     }
 
-    public final static <Result2, Error2 extends Throwable> AbsThreadRunnableProcess<Result2, Error2> newOne(final Callable<Result2> callable, Class<Result2> resultClass, Class<Error2> errorClass) {
+    public final static <Result2, Error2 extends Throwable> AbsThreadRunnableProcess<Result2, Error2> newOne(final Callable<Result2> callable) {
         return new AbsThreadRunnableProcess<Result2, Error2>() {
             @Override
             protected Result2 run(Process<Result2, Error2>.ExecutionVariables executionVariables) throws Exception {
                 return callable.call();
             }
         };
+    }
+
+    static class ErrorThrowingException extends RuntimeException {
+
     }
 }

@@ -33,7 +33,7 @@ public class HttpProcess<Result, Error extends Throwable> extends AbsHttpProcess
         this.executor = executor;
     }
 
-    public void setUploader(HttpAsyncQuery.HttpUploadHandler uploader) {
+    public void setUploader(HttpAsyncQuery.UploadHandler uploader) {
         this.uploader = uploader;
     }
 
@@ -92,7 +92,7 @@ public class HttpProcess<Result, Error extends Throwable> extends AbsHttpProcess
 
     protected HttpAsyncQuery onCreateHttpAsyncQuery(HttpQuery http, int method, String url, ExecutionVariables vars) {
         AsyncHttp asyncHttp = AsyncHttp.from(http)
-                .setQueryCallback(new HttpAsyncQuery.HttpQueryCallback() {
+                .setQueryCallback(new HttpAsyncQuery.Callback() {
                     @Override
                     public void onHttpSuccess(HttpQueryResult resp) {
                         onSuccessHappen(resp);
@@ -104,7 +104,7 @@ public class HttpProcess<Result, Error extends Throwable> extends AbsHttpProcess
                     }
 
                     @Override
-                    public void onHttpFail(Exception e) {
+                    public void onHttpFailure(Exception e) {
                         onFailingHappen(e);
                     }
 
