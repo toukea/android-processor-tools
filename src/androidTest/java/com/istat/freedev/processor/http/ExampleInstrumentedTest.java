@@ -3,7 +3,7 @@ package com.istat.freedev.processor.http;
 import android.content.Context;
 import android.os.AsyncTask;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.runner.AndroidJUnit4;
 
 import com.istat.freedev.processor.Process;
 import com.istat.freedev.processor.ProcessManager;
@@ -38,7 +38,7 @@ public class ExampleInstrumentedTest {
     @Test
     public void useAppContext() throws Exception {
         // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         assertEquals("com.istat.freedev.processor.http.test", appContext.getPackageName());
     }
