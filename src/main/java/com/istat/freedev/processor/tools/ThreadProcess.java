@@ -6,7 +6,7 @@ import com.istat.freedev.processor.Process;
  * Created by istat on 07/02/17.
  */
 
-public abstract class AbsThreadProcess<Result, Error extends Throwable> extends Process<Result, Error> {
+public abstract class ThreadProcess<Result, Error extends Throwable> extends Process<Result, Error> {
     Thread thread;
 
     @Override
@@ -64,8 +64,8 @@ public abstract class AbsThreadProcess<Result, Error extends Throwable> extends 
         return thread;
     }
 
-    public final static AbsThreadProcess newOne(final Thread thread) {
-        return new AbsThreadProcess() {
+    public final static ThreadProcess newOne(final Thread thread) {
+        return new ThreadProcess() {
             @Override
             protected Thread onCreateThread(ExecutionVariables executionVariables) {
                 return thread;
@@ -73,8 +73,8 @@ public abstract class AbsThreadProcess<Result, Error extends Throwable> extends 
         };
     }
 
-    public static AbsThreadProcess newOne(final Runnable runnable) {
-        return new AbsThreadProcess() {
+    public static ThreadProcess newOne(final Runnable runnable) {
+        return new ThreadProcess() {
             @Override
             protected Thread onCreateThread(ExecutionVariables executionVariables) {
                 return new Thread(runnable);

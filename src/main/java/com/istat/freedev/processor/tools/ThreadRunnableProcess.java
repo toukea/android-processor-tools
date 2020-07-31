@@ -8,7 +8,7 @@ import java.util.concurrent.Callable;
  * Created by istat on 07/02/17.
  */
 
-public abstract class AbsThreadRunnableProcess<Result, Error extends Throwable> extends AbsThreadProcess<Result, Error> {
+public abstract class ThreadRunnableProcess<Result, Error extends Throwable> extends ThreadProcess<Result, Error> {
 
     @Override
     protected Thread onCreateThread(final Process<Result, Error>.ExecutionVariables executionVariables) {
@@ -16,7 +16,7 @@ public abstract class AbsThreadRunnableProcess<Result, Error extends Throwable> 
             @Override
             public void run() {
                 try {
-                    final Result result = AbsThreadRunnableProcess.this.run(executionVariables);
+                    final Result result = ThreadRunnableProcess.this.run(executionVariables);
                     notifySucceed(result);
                 } catch (final ErrorThrowingException e) {
                     //do notthingn if this happend, it is because lib-user has called notifyErrorAndThrow(Error), the system will now dispatch Error state.
@@ -35,8 +35,8 @@ public abstract class AbsThreadRunnableProcess<Result, Error extends Throwable> 
     protected abstract Result run(Process<Result, Error>.ExecutionVariables executionVariables) throws Exception;
 
 
-    public final static AbsThreadRunnableProcess newOne(final Runnable runnable) {
-        return new AbsThreadRunnableProcess() {
+    public final static ThreadRunnableProcess newOne(final Runnable runnable) {
+        return new ThreadRunnableProcess() {
             @Override
             protected Runnable run(Process.ExecutionVariables executionVariables) {
                 return runnable;
@@ -44,8 +44,8 @@ public abstract class AbsThreadRunnableProcess<Result, Error extends Throwable> 
         };
     }
 
-    public final static <Result2, Error2 extends Throwable> AbsThreadRunnableProcess<Result2, Error2> newOne(final Callable<Result2> callable) {
-        return new AbsThreadRunnableProcess<Result2, Error2>() {
+    public final static <Result2, Error2 extends Throwable> ThreadRunnableProcess<Result2, Error2> newOne(final Callable<Result2> callable) {
+        return new ThreadRunnableProcess<Result2, Error2>() {
             @Override
             protected Result2 run(Process<Result2, Error2>.ExecutionVariables executionVariables) throws Exception {
                 return callable.call();
