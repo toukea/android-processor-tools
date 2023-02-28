@@ -12,9 +12,14 @@ public abstract class ThreadProcess<Result, Error extends Throwable> extends Pro
     @Override
     protected final void onExecute(ExecutionVariables executionVariables) {
         thread = onCreateThread(executionVariables);
+        onThreadCreated(thread, executionVariables);
         if (thread != null && !thread.isAlive()) {
             thread.start();
         }
+    }
+
+    protected void onThreadCreated(Thread thread, ExecutionVariables executionVariables){
+
     }
 
     protected abstract Thread onCreateThread(ExecutionVariables executionVariables);
