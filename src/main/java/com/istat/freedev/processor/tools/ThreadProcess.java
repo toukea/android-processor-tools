@@ -69,8 +69,8 @@ public abstract class ThreadProcess<Result, Error extends Throwable> extends Pro
         return thread;
     }
 
-    public final static ThreadProcess newOne(final Thread thread) {
-        return new ThreadProcess() {
+    public static ThreadProcess<Void, Throwable> newOne(final Thread thread) {
+        return new ThreadProcess<>() {
             @Override
             protected Thread onCreateThread(ExecutionVariables executionVariables) {
                 return thread;
@@ -78,8 +78,8 @@ public abstract class ThreadProcess<Result, Error extends Throwable> extends Pro
         };
     }
 
-    public static ThreadProcess newOne(final Runnable runnable) {
-        return new ThreadProcess() {
+    public static ThreadProcess<Void, Throwable>  newOne(final Runnable runnable) {
+        return new ThreadProcess<>() {
             @Override
             protected Thread onCreateThread(ExecutionVariables executionVariables) {
                 return new Thread(runnable);
