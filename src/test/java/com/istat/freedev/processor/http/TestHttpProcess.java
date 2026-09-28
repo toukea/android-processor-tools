@@ -1,7 +1,8 @@
 package com.istat.freedev.processor.http;
 
 
-import com.istat.freedev.processor.http.async.HttpProcess;
+import com.istat.freedev.processor.Process;
+import com.istat.freedev.processor.tools.ThreadRunnableProcess;
 
 import istat.android.network.http.AsyncHttp;
 
@@ -9,7 +10,7 @@ import istat.android.network.http.AsyncHttp;
  * Created by istat on 05/05/17.
  */
 
-public class TestHttpProcess extends HttpProcess<String, Throwable> {
+public class TestHttpProcess extends ThreadRunnableProcess<String, Throwable> {
 
 
     public TestHttpProcess(AsyncHttp asyncHttp) {
@@ -18,6 +19,11 @@ public class TestHttpProcess extends HttpProcess<String, Throwable> {
 
     public TestHttpProcess(AsyncHttp asyncHttp, int method, String url) {
         super();
+    }
+
+    @Override
+    protected String run(Process<String, Throwable>.ExecutionVariables executionVariables) throws Exception {
+        return null;
     }
 
 //    @Override
